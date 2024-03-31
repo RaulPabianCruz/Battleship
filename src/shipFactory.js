@@ -1,5 +1,5 @@
 function shipFactory(length) {
-  if (typeof length !== 'number' || length < 2 || length > 5)
+  if (typeof length !== 'number' || length < 1 || length > 5)
     throw new Error('Invalid ship length.');
   let hitsRemaining = length;
 

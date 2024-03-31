@@ -34,7 +34,7 @@ test('throws error when length argument is not a number', () => {
 
 test('throws error when length argument is too small', () => {
   expect(() => {
-    shipFactory(1);
+    shipFactory(0);
   }).toThrow('Invalid ship length.');
 });
 
