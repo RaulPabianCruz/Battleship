@@ -26,15 +26,15 @@ function intializeGridContent() {
 function createSection(playerString) {
   let section = document.createElement('div');
   section.classList.add(`${playerString}`);
-  section.classList.add('section');
+  section.classList.add('grid-section-container');
 
   let sectionTitle = document.createElement('h4');
   sectionTitle.classList.add(`${playerString}`);
-  sectionTitle.classList.add('section-title');
+  sectionTitle.classList.add('grid-title');
 
   let sectionGrid = document.createElement('div');
   sectionGrid.classList.add(`${playerString}`);
-  sectionGrid.classList.add('section-grid');
+  sectionGrid.classList.add('grid');
 
   section.appendChild(sectionTitle);
   section.appendChild(sectionGrid);
