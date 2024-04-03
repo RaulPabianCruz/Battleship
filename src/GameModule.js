@@ -41,6 +41,7 @@ function GameModule() {
     let attackCoors = comp.attackEnemy();
     playerBoard.receiveAttack(attackCoors[0], attackCoors[1]);
     togglePlayerTurn();
+    return attackCoors;
   }
 
   function playerAttack(coor1, coor2) {

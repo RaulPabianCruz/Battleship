@@ -86,6 +86,19 @@ test('compAttack correctly switches turns', () => {
   expect(game.isPlayerTurn()).toBe(true);
 });
 
+test('compAttack returns attack coordinates', () => {
+  let game = GameModule();
+  game.placeShips();
+  game.playerAttack(0, 0);
+  let coordinates = game.compAttack();
+  expect(Array.isArray(coordinates)).toBe(true);
+  expect(coordinates.length).toBe(2);
+  expect(typeof coordinates[0] === 'number').toBe(true);
+  expect(coordinates[0] >= 0 && coordinates[0] < 10).toBe(true);
+  expect(typeof coordinates[1] === 'number').toBe(true);
+  expect(coordinates[1] >= 0 && coordinates[1] < 10).toBe(true);
+});
+
 test('isGameOver reports that game is not over correctly', () => {
   let game = GameModule();
   game.placeShips();
