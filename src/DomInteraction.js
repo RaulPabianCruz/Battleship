@@ -1,55 +1,73 @@
-function initializeLayout() {}
-
-function initializeHeader() {
-  let header = document.querySelector('.header');
-  let h2 = document.createElement('h2');
-  h2.classList.add('header-title');
-  h2.textContent = 'Battleship, The Game';
-  header.append(h2);
-}
-
-function initializeStatus() {
-  let status = document.querySelector('.status-container');
-  let h3 = document.createElement('h3');
-  h3.classList.add('status-text');
-  status.append(h3);
-}
-
-function intializeGridContent() {
-  let gridContent = document.querySelector('.grid-content');
-  let playerSection = createSection('player');
-  let opponentSection = createSection('opponent');
-  gridContent.appendChild(playerSection);
-  gridContent.appendChild(opponentSection);
-}
-
-function createSection(playerString) {
-  let section = document.createElement('div');
-  section.classList.add(`${playerString}`);
-  section.classList.add('grid-section-container');
-
-  let sectionTitle = document.createElement('h4');
-  sectionTitle.classList.add(`${playerString}`);
-  sectionTitle.classList.add('grid-title');
-
-  let sectionGrid = document.createElement('div');
-  sectionGrid.classList.add(`${playerString}`);
-  sectionGrid.classList.add('grid');
-
-  section.appendChild(sectionTitle);
-  section.appendChild(sectionGrid);
-  return section;
-}
+import GameModule from './GameModule';
 
 function DOMController() {
-  function renderOpponentGrid() {}
-  function renderPlayerGrid() {}
+  let game = GameModule();
+
+  function createGridSquare(row, col, selector, value) {
+    let square = document.createElement('div');
+    square.classList.add('grid-square');
+    square.classList.add(selector);
+    square.setAttribute('data-row', row);
+    square.setAttribute('data-col', col);
+
+    if (typeof value === 'string') square.classList.add('ship');
+
+    return square;
+  }
+
+  function updateSquare(squareElem, value) {
+    if (value === 1) squareElem.classList.add('hit');
+    else squareElem.classList.add('miss');
+  }
+
+  function updateOpponentGrid(opponentSquare, coor1, coor2) {
+    let opponentBoard = game.getCompBoard();
+    let value = opponentBoard[coor1][coor2];
+    updateSquare(opponentSquare, value);
+  }
+
+  function updatePlayerGrid(coor1, coor2) {
+    let playerGrid = document.querySelector('.player.grid');
+    let playerSquare = playerGrid.querySelector(
+      `[data-row="${coor1}"][data-col="${coor2}"]`,
+    );
+    let playerBoard = game.getPlayerBoard();
+    let value = playerBoard[coor1][coor2];
+    updateSquare(playerSquare, value);
+  }
+
+  function gridClickHandler(event) {
+    let square = event.target;
+    let coor1 = Number(square.getAttribute('data-row'));
+    let coor2 = Number(square.getAttribute('data-col'));
+
+    game.playerAttack(coor1, coor2);
+    updateOpponentGrid(square, coor1, coor2);
+    //updateStatusText();
+
+    [coor1, coor2] = game.compAttack();
+    updatePlayerGrid(coor1, coor2);
+    //updateStatusText();
+  }
+
+  function renderGrid(array, selector) {
+    let grid = document.querySelector(`.${selector}.grid`);
+
+    for (let i = 0; i < array.length; i += 1) {
+      for (let j = 0; j < array[i].length; j += 1) {
+        let gridSquare = createGridSquare(i, j, selector, array[i][j]);
+        grid.appendChild(gridSquare);
+      }
+    }
+    if (selector === 'opponent')
+      grid.addEventListener('click', gridClickHandler);
+  }
+
   function updateStatusText(statusMessage) {}
-  return {};
+
+  game.placeShips();
+  renderGrid(game.getPlayerBoard(), 'player');
+  renderGrid(game.getCompBoard(), 'opponent');
+  return { renderGrid };
 }
-export {
-  DOMController,
-  initializeHeader,
-  initializeStatus,
-  intializeGridContent,
-};
+export default DOMController;
