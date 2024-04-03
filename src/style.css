@@ -53,6 +53,7 @@ body {
 }
 .grid-content {
     width: 90%;
+    margin: 0px auto;
     display: grid;
     grid-gap: 90px;
     grid-template-columns: 1fr 1fr;
@@ -75,4 +76,25 @@ body {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
+}
+
+.grid-square {
+    border: 1px solid black;
+}
+
+.ship {
+    background-color: blue;
+}
+
+.hit,
+.miss {
+    pointer-events: none;
+}
+
+.hit {
+    background-color: red;
+}
+
+.miss {
+    background-color: black;
 }
