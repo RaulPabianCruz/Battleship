@@ -34,6 +34,15 @@ test('GameModule initializes with player as the first turn', () => {
   expect(game.isPlayerTurn()).toBe(true);
 });
 
+test('increaseRoundNumber correctly increases round Number', () => {
+  let game = GameModule();
+  expect(game.getRoundNumber()).toBe(1);
+  game.increaseRoundNumber();
+  expect(game.getRoundNumber()).toBe(2);
+  game.increaseRoundNumber();
+  expect(game.getRoundNumber()).toBe(3);
+});
+
 test('playerAttack correctly registers on opponent board', () => {
   let game = GameModule();
   game.placeShips();
@@ -168,4 +177,53 @@ test('getResultsMessage correctly reports comp winner', () => {
   ]);
   expect(game.isGameOver()).toBe(true);
   expect(game.getResultsMessage()).toBe('You lose!');
+});
+
+test('resetGame resets everything correctly', () => {
+  let game = GameModule();
+  game.placeShips();
+  let attackCoordinates = [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4],
+    [2, 1],
+    [3, 1],
+    [4, 1],
+    [5, 1],
+    [3, 8],
+    [4, 8],
+    [5, 8],
+    [7, 4],
+    [7, 5],
+    [9, 7],
+  ];
+  for (let i = 0; i < attackCoordinates.length; i += 1) {
+    let coor1 = attackCoordinates[i][0];
+    let coor2 = attackCoordinates[i][1];
+    game.playerAttack(coor1, coor2);
+    if (!game.isGameOver()) {
+      game.compAttack();
+      game.increaseRoundNumber();
+    }
+  }
+  expect(game.getRoundNumber()).toBe(15);
+  expect(game.isGameOver()).toBe(true);
+  game.resetGame();
+  expect(game.getRoundNumber()).toBe(1);
+  expect(game.isPlayerTurn()).toBe(true);
+  expect(game.getCompBoard()).toEqual([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+  expect(game.getPlayerBoard()).toEqual(game.getCompBoard());
 });

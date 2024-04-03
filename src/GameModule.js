@@ -5,13 +5,15 @@ function GameModule() {
   let playerBoard;
   let compBoard;
   let comp;
-  let playerTurn = true;
+  let playerTurn;
+  let roundNumber;
 
-  function initializeGame() {
+  function resetGame() {
     comp = PlayerFactory();
     playerBoard = GameBoardFactory();
     compBoard = GameBoardFactory();
     playerTurn = true;
+    roundNumber = 1;
   }
 
   //temporary stop gap on this function
@@ -35,6 +37,14 @@ function GameModule() {
 
   function isPlayerTurn() {
     return playerTurn;
+  }
+
+  function increaseRoundNumber() {
+    roundNumber += 1;
+  }
+
+  function getRoundNumber() {
+    return roundNumber;
   }
 
   function compAttack() {
@@ -69,10 +79,13 @@ function GameModule() {
     return undefined;
   }
 
-  initializeGame();
+  resetGame();
   return {
+    resetGame,
     placeShips,
     isPlayerTurn,
+    increaseRoundNumber,
+    getRoundNumber,
     getPlayerBoard,
     getCompBoard,
     playerAttack,
