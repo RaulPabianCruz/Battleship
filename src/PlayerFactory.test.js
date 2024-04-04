@@ -21,3 +21,14 @@ test('attackEnemy can make all possible attacks', () => {
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
   ]);
 });
+
+test('getShipPlacement returns valid coordinates', () => {
+  let player = PlayerFactory();
+  let placement = player.getShipPlacement();
+  expect(placement.length).toBe(3);
+  expect(typeof placement[0]).toBe('number');
+  expect(placement[0] >= 0 && placement[0] < 10).toBe(true);
+  expect(typeof placement[1]).toBe('number');
+  expect(placement[1] >= 0 && placement[1] < 10).toBe(true);
+  expect(typeof placement[2]).toBe('boolean');
+});

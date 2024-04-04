@@ -21,8 +21,18 @@ function PlayerFactory() {
     return attackCoordinates;
   }
 
+  function getShipPlacement() {
+    let shipPlacement = new Array(3);
+    for (let i = 0; i < 2; i += 1) {
+      let randCoor = Math.floor(Math.random() * boardLength);
+      shipPlacement[i] = randCoor;
+    }
+    shipPlacement[2] = Math.random() < 0.5;
+    return shipPlacement;
+  }
+
   legalAttacks = createAttackCoordinates(boardLength);
-  return { attackEnemy };
+  return { attackEnemy, getShipPlacement };
 }
 
 export default PlayerFactory;
