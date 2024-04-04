@@ -2,7 +2,30 @@ import GameModule from './GameModule';
 
 test('GameModule initializes boards correctly', () => {
   let game = GameModule();
-  game.placeShips();
+  expect(game.getRoundNumber()).toBe(1);
+  expect(game.isPlayerTurn()).toBe(true);
+  expect(game.getPlayerBoard()).toEqual(game.getCompBoard());
+  expect(game.getPlayerBoard()).toEqual([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+});
+
+test('placePlayerShip places ships correctly', () => {
+  let game = GameModule();
+  game.placePlayerShip('Carrier', 0, 0, false);
+  game.placePlayerShip('Battleship', 2, 1, true);
+  game.placePlayerShip('Destroyer', 3, 8, true);
+  game.placePlayerShip('Submarine', 7, 4, false);
+  game.placePlayerShip('PatrolBoat', 9, 7);
   expect(game.getPlayerBoard()).toEqual([
     ['Carrier', 'Carrier', 'Carrier', 'Carrier', 'Carrier', 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -17,9 +40,38 @@ test('GameModule initializes boards correctly', () => {
   ]);
 });
 
-test('GameModule initializes with player as the first turn', () => {
+test('placePlayerShip returns correct value when ship is placed', () => {
   let game = GameModule();
-  expect(game.isPlayerTurn()).toBe(true);
+  expect(game.placePlayerShip('Carrier', 0, 0, false)).toBe(true);
+  expect(game.placePlayerShip('Battleship', 2, 1, true)).toBe(true);
+  expect(game.placePlayerShip('Destroyer', 3, 8, true)).toBe(true);
+  expect(game.placePlayerShip('Submarine', 7, 4, false)).toBe(true);
+  expect(game.placePlayerShip('PatrolBoat', 9, 7)).toBe(true);
+});
+
+test('placePlayerShip returns correct value when ship is not placed', () => {
+  let game = GameModule();
+  game.placePlayerShip('Carrier', 0, 0, false);
+  expect(game.placePlayerShip('Carrier', 3, 3, false)).toBe(false);
+  expect(game.placePlayerShip('Battleship', 7, 4, true)).toBe(false);
+  expect(game.placePlayerShip('Ship', 2, 2, true)).toBe(false);
+});
+
+test('placeAllCompShips functions correctly', () => {
+  let game = GameModule();
+  game.placeAllCompShips();
+  expect(game.getCompBoard()).not.toEqual([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
 });
 
 test('increaseRoundNumber correctly increases round Number', () => {
@@ -45,19 +97,18 @@ test('playerAttack correctly switches turns', () => {
 
 test('compAttack registers correctly on player board', () => {
   let game = GameModule();
-  game.placeShips();
   game.compAttack();
   expect(game.getPlayerBoard()).not.toEqual([
-    ['Carrier', 'Carrier', 'Carrier', 'Carrier', 'Carrier', 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 'Battleship', 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 'Battleship', 0, 0, 0, 0, 0, 0, 'Destroyer', 0],
-    [0, 'Battleship', 0, 0, 0, 0, 0, 0, 'Destroyer', 0],
-    [0, 'Battleship', 0, 0, 0, 0, 0, 0, 'Destroyer', 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 'Submarine', 'Submarine', 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 'PatrolBoat', 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 });
 
@@ -79,26 +130,9 @@ test('compAttack returns attack coordinates', () => {
   expect(coordinates[1] >= 0 && coordinates[1] < 10).toBe(true);
 });
 
-test('placeAllCompShips functions correctly', () => {
-  let game = GameModule();
-  game.placeAllCompShips();
-  expect(game.getCompBoard()).not.toEqual([
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ]);
-});
-
 test('isGameOver reports that game is not over correctly', () => {
   let game = GameModule();
-  game.placeShips();
+  game.placePlayerShip('Carrier', 0, 0, false);
   game.placeAllCompShips();
   game.playerAttack(0, 0);
   game.compAttack();
@@ -109,7 +143,7 @@ test('isGameOver reports that game is not over correctly', () => {
 
 test('getResultsMessage correctly reports player winner', () => {
   let game = GameModule();
-  game.placeShips();
+  game.placePlayerShip('Carrier', 0, 0, false);
   game.placeAllCompShips();
   for (let i = 0; i < 10; i += 1) {
     for (let j = 0; j < 10; j += 1) {
@@ -122,20 +156,20 @@ test('getResultsMessage correctly reports player winner', () => {
 
 test('getResultsMessage correctly reports comp winner', () => {
   let game = GameModule();
-  game.placeShips();
+  game.placePlayerShip('Carrier', 0, 0, false);
   game.placeAllCompShips();
   for (let i = 0; i < 100; i += 1) game.compAttack();
   expect(game.getPlayerBoard()).toEqual([
     [1, 1, 1, 1, 1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, 1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, 1, -1, -1, -1, -1, -1, -1, 1, -1],
-    [-1, 1, -1, -1, -1, -1, -1, -1, 1, -1],
-    [-1, 1, -1, -1, -1, -1, -1, -1, 1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, 1, 1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, 1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
   ]);
   expect(game.isGameOver()).toBe(true);
   expect(game.getResultsMessage()).toBe('You lose!');
@@ -143,7 +177,7 @@ test('getResultsMessage correctly reports comp winner', () => {
 
 test('resetGame resets everything correctly', () => {
   let game = GameModule();
-  game.placeShips();
+  game.placePlayerShip('Carrier', 0, 0, false);
   game.placeAllCompShips();
 
   game.playerAttack(0, 0);

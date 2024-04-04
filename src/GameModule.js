@@ -16,13 +16,37 @@ function GameModule() {
     roundNumber = 1;
   }
 
-  //temporary stop gap on this function
-  function placeShips() {
-    playerBoard.placeCarrier(0, 0, false);
-    playerBoard.placeBattleship(2, 1, true);
-    playerBoard.placeDestroyer(3, 8, true);
-    playerBoard.placeSubmarine(7, 4, false);
-    playerBoard.placePatrolBoat(9, 7);
+  function placePlayerShip(shipName, coor1, coor2, isVertical = true) {
+    let isShipPlaced;
+    try {
+      switch (shipName) {
+        case 'Carrier':
+          playerBoard.placeCarrier(coor1, coor2, isVertical);
+          isShipPlaced = true;
+          break;
+        case 'Battleship':
+          playerBoard.placeBattleship(coor1, coor2, isVertical);
+          isShipPlaced = true;
+          break;
+        case 'Destroyer':
+          playerBoard.placeDestroyer(coor1, coor2, isVertical);
+          isShipPlaced = true;
+          break;
+        case 'Submarine':
+          playerBoard.placeSubmarine(coor1, coor2, isVertical);
+          isShipPlaced = true;
+          break;
+        case 'PatrolBoat':
+          playerBoard.placePatrolBoat(coor1, coor2);
+          isShipPlaced = true;
+          break;
+        default:
+          isShipPlaced = false;
+      }
+    } catch (error) {
+      isShipPlaced = false;
+    }
+    return isShipPlaced;
   }
 
   function placeCompShip(shipName) {
@@ -113,7 +137,7 @@ function GameModule() {
   resetGame();
   return {
     resetGame,
-    placeShips,
+    placePlayerShip,
     placeAllCompShips,
     isPlayerTurn,
     increaseRoundNumber,
