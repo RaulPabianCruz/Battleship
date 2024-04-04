@@ -27,6 +27,7 @@ function createSection(playerString) {
   section.classList.add('grid-section-container');
 
   let sectionTitle = document.createElement('h4');
+  sectionTitle.textContent = `${playerString} board:`;
   sectionTitle.classList.add(`${playerString}`);
   sectionTitle.classList.add('grid-title');
 
@@ -39,10 +40,20 @@ function createSection(playerString) {
   return section;
 }
 
+function intializeFooter() {
+  let buttonArea = document.querySelector('.button-container');
+  let resetBttn = document.createElement('button');
+  resetBttn.textContent = 'Reset';
+  resetBttn.classList.add('reset-bttn');
+
+  buttonArea.appendChild(resetBttn);
+}
+
 function initializeLayout() {
   initializeHeader();
   initializeStatus();
   intializeGridContent();
+  intializeFooter();
 }
 
 export default initializeLayout;
