@@ -3,18 +3,6 @@ import GameModule from './GameModule';
 function DOMController() {
   let game = GameModule();
 
-  function createGridSquare(row, col, selector, value) {
-    let square = document.createElement('div');
-    square.classList.add('grid-square');
-    square.classList.add(selector);
-    square.setAttribute('data-row', row);
-    square.setAttribute('data-col', col);
-
-    if (typeof value === 'string') square.classList.add('ship');
-
-    return square;
-  }
-
   function updateSquare(squareElem, value) {
     if (value === 1) squareElem.classList.add('hit');
     else squareElem.classList.add('miss');
@@ -31,9 +19,21 @@ function DOMController() {
     let playerSquare = playerGrid.querySelector(
       `[data-row="${coor1}"][data-col="${coor2}"]`,
     );
+
     let playerBoard = game.getPlayerBoard();
     let value = playerBoard[coor1][coor2];
+
     updateSquare(playerSquare, value);
+  }
+
+  function updateStatusText() {
+    let statusText = document.querySelector('.status-text');
+    if (game.isGameOver()) {
+      statusText.textContent = game.getResultsMessage();
+    } else {
+      let roundNumber = game.getRoundNumber();
+      statusText.textContent = `Turn ${roundNumber}`;
+    }
   }
 
   function gridClickHandler(event) {
@@ -43,15 +43,34 @@ function DOMController() {
 
     game.playerAttack(coor1, coor2);
     updateOpponentGrid(square, coor1, coor2);
-    //updateStatusText();
 
-    [coor1, coor2] = game.compAttack();
-    updatePlayerGrid(coor1, coor2);
-    //updateStatusText();
+    if (!game.isGameOver()) {
+      [coor1, coor2] = game.compAttack();
+      updatePlayerGrid(coor1, coor2);
+      game.increaseRoundNumber();
+    }
+
+    updateStatusText();
+  }
+
+  function createGridSquare(row, col, selector, value) {
+    let square = document.createElement('div');
+    square.classList.add('grid-square');
+    square.classList.add(selector);
+    square.setAttribute('data-row', row);
+    square.setAttribute('data-col', col);
+
+    if (typeof value === 'string') square.classList.add('ship');
+
+    if (selector === 'opponent')
+      square.addEventListener('click', gridClickHandler);
+
+    return square;
   }
 
   function renderGrid(array, selector) {
     let grid = document.querySelector(`.${selector}.grid`);
+    grid.replaceChildren();
 
     for (let i = 0; i < array.length; i += 1) {
       for (let j = 0; j < array[i].length; j += 1) {
@@ -59,15 +78,16 @@ function DOMController() {
         grid.appendChild(gridSquare);
       }
     }
-    if (selector === 'opponent')
-      grid.addEventListener('click', gridClickHandler);
   }
 
-  function updateStatusText(statusMessage) {}
+  function resetGameDisplay() {
+    game.resetGame();
+    game.placeShips();
+    renderGrid(game.getPlayerBoard(), 'player');
+    renderGrid(game.getCompBoard(), 'opponent');
+    updateStatusText();
+  }
 
-  game.placeShips();
-  renderGrid(game.getPlayerBoard(), 'player');
-  renderGrid(game.getCompBoard(), 'opponent');
-  return { renderGrid };
+  return { resetGameDisplay };
 }
 export default DOMController;
