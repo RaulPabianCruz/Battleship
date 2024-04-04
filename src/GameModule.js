@@ -23,12 +23,43 @@ function GameModule() {
     playerBoard.placeDestroyer(3, 8, true);
     playerBoard.placeSubmarine(7, 4, false);
     playerBoard.placePatrolBoat(9, 7);
+  }
 
-    compBoard.placeCarrier(0, 0, false);
-    compBoard.placeBattleship(2, 1, true);
-    compBoard.placeDestroyer(3, 8, true);
-    compBoard.placeSubmarine(7, 4, false);
-    compBoard.placePatrolBoat(9, 7);
+  function placeCompShip(shipName) {
+    let shipIsPlaced = false;
+    while (!shipIsPlaced) {
+      let coor1, coor2, isVertical;
+      [coor1, coor2, isVertical] = comp.getShipPlacement();
+      try {
+        switch (shipName) {
+          case 'Carrier':
+            compBoard.placeCarrier(coor1, coor2, isVertical);
+            break;
+          case 'Battleship':
+            compBoard.placeBattleship(coor1, coor2, isVertical);
+            break;
+          case 'Destroyer':
+            compBoard.placeDestroyer(coor1, coor2, isVertical);
+            break;
+          case 'Submarine':
+            compBoard.placeSubmarine(coor1, coor2, isVertical);
+            break;
+          default:
+            compBoard.placePatrolBoat(coor1, coor2);
+        }
+        shipIsPlaced = true;
+      } catch (error) {
+        //console.log(`Error placing ${shipName}.`);
+      }
+    }
+  }
+
+  function placeAllCompShips() {
+    placeCompShip('Carrier');
+    placeCompShip('Battleship');
+    placeCompShip('Destroyer');
+    placeCompShip('Submarine');
+    placeCompShip('PatrolBoat');
   }
 
   function togglePlayerTurn() {
@@ -83,6 +114,7 @@ function GameModule() {
   return {
     resetGame,
     placeShips,
+    placeAllCompShips,
     isPlayerTurn,
     increaseRoundNumber,
     getRoundNumber,
