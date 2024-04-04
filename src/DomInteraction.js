@@ -83,6 +83,7 @@ function DOMController() {
   function resetGameDisplay() {
     game.resetGame();
     game.placeShips();
+    game.placeAllCompShips();
     renderGrid(game.getPlayerBoard(), 'player');
     renderGrid(game.getCompBoard(), 'opponent');
     updateStatusText();
