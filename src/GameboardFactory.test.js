@@ -17,7 +17,7 @@ test('Initializes with correct gameboard layout', () => {
   ]);
 });
 
-test('placeCarrier works correctly(vertically and horizontally)', () => {
+test('placeCarrier works correctly(vertically)', () => {
   let board = GameBoardFactory();
   board.placeCarrier(1, 2, true);
   expect(board.getGameboard()).toEqual([
@@ -32,19 +32,31 @@ test('placeCarrier works correctly(vertically and horizontally)', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeCarrier places Carrier correctly(horizontally)', () => {
+  let board = GameBoardFactory();
   board.placeCarrier(6, 5, false);
   expect(board.getGameboard()).toEqual([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Carrier', 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Carrier', 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Carrier', 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Carrier', 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Carrier', 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 'Carrier', 'Carrier', 'Carrier', 'Carrier', 'Carrier'],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeCarrier throws error when attempting to place more than one Carrier', () => {
+  let board = GameBoardFactory();
+  board.placeCarrier(1, 2, true);
+  expect(() => {
+    board.placeCarrier(6, 5, false);
+  }).toThrow('Invalid Action: Carrier has already been placed.');
 });
 
 test('placeCarrier throws error when out of bounds', () => {
@@ -77,7 +89,7 @@ test('placeCarrier throws error when placing over existing ship', () => {
   ]);
 });
 
-test('placeBattleship works correctly(vertically and horizontally)', () => {
+test('placeBattleship works correctly(vertically)', () => {
   let board = GameBoardFactory();
   board.placeBattleship(3, 4, true);
   expect(board.getGameboard()).toEqual([
@@ -92,19 +104,31 @@ test('placeBattleship works correctly(vertically and horizontally)', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeBattleship places Battleship correctly(horizontally)', () => {
+  let board = GameBoardFactory();
   board.placeBattleship(1, 2, false);
   expect(board.getGameboard()).toEqual([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 'Battleship', 'Battleship', 'Battleship', 'Battleship', 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 'Battleship', 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 'Battleship', 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 'Battleship', 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 'Battleship', 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeBattleship throws error when attempting to place more than one', () => {
+  let board = GameBoardFactory();
+  board.placeBattleship(3, 4, true);
+  expect(() => {
+    board.placeBattleship(1, 2, false);
+  }).toThrow('Invalid Action: Battleship has already been placed.');
 });
 
 test('placeBattleship throws error when out of bounds', () => {
@@ -137,7 +161,7 @@ test('placeBattleship throws error when placed over existing ship', () => {
   ]);
 });
 
-test('placeDestroyer works correctly(vertically and horizontally)', () => {
+test('placeDestroyer works correctly(vertically)', () => {
   let board = GameBoardFactory();
   board.placeDestroyer(6, 9, true);
   expect(board.getGameboard()).toEqual([
@@ -152,6 +176,10 @@ test('placeDestroyer works correctly(vertically and horizontally)', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 'Destroyer'],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeDestroyer places Destroyer correctly(horizontally)', () => {
+  let board = GameBoardFactory();
   board.placeDestroyer(0, 2, false);
   expect(board.getGameboard()).toEqual([
     [0, 0, 'Destroyer', 'Destroyer', 'Destroyer', 0, 0, 0, 0, 0],
@@ -160,11 +188,19 @@ test('placeDestroyer works correctly(vertically and horizontally)', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 'Destroyer'],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 'Destroyer'],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 'Destroyer'],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeDestroyer throws error when attempting to place more than one', () => {
+  let board = GameBoardFactory();
+  board.placeDestroyer(6, 9, true);
+  expect(() => {
+    board.placeDestroyer(0, 2, false);
+  }).toThrow('Invalid Action: Destroyer has already been placed.');
 });
 
 test('placeDestroyer throws error when out of bounds', () => {
@@ -197,7 +233,7 @@ test('placeDestroyer throws error when placed over existing ship', () => {
   ]);
 });
 
-test('placeSubmarine works correctly(vertically and horizontally)', () => {
+test('placeSubmarine works correctly(vertically)', () => {
   let board = GameBoardFactory();
   board.placeSubmarine(3, 2, true);
   expect(board.getGameboard()).toEqual([
@@ -212,19 +248,31 @@ test('placeSubmarine works correctly(vertically and horizontally)', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeSubmarine places Submarine correctly(horizontally)', () => {
+  let board = GameBoardFactory();
   board.placeSubmarine(6, 5, false);
   expect(board.getGameboard()).toEqual([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Submarine', 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 'Submarine', 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 'Submarine', 'Submarine', 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placeSubmarine throws error when attempting to place more than one', () => {
+  let board = GameBoardFactory();
+  board.placeSubmarine(3, 2, true);
+  expect(() => {
+    board.placeSubmarine(6, 5, false);
+  }).toThrow('Invalid Action: Submarine has already been placed.');
 });
 
 test('placeSubmarine throws error when out of bounds', () => {
@@ -272,6 +320,14 @@ test('placePatrolBoat works correctly(no orientation needed)', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+});
+
+test('placePatrolBoat throws error when attempting to place more than one', () => {
+  let board = GameBoardFactory();
+  board.placePatrolBoat(3, 5);
+  expect(() => {
+    board.placePatrolBoat(6, 6);
+  }).toThrow('Invalid Action: Patrol Boat has already been placed.');
 });
 
 test('placePatrolBoat throws error when out of bounds', () => {

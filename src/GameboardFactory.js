@@ -52,30 +52,49 @@ function GameBoardFactory() {
   }
 
   function placeCarrier(coor1, coor2, isVertical) {
+    if (shipList.get('Carrier') !== undefined)
+      throw new Error('Invalid Action: Carrier has already been placed.');
+
     if (isVertical) placeVerticalShip(coor1, coor2, 'Carrier', 5, gameBoard);
     else placeHorizontalShip(coor1, coor2, 'Carrier', 5, gameBoard);
+
     shipList.set('Carrier', shipFactory(5));
   }
 
   function placeBattleship(coor1, coor2, isVertical) {
+    if (shipList.get('Battleship') !== undefined)
+      throw new Error('Invalid Action: Battleship has already been placed.');
+
     if (isVertical) placeVerticalShip(coor1, coor2, 'Battleship', 4, gameBoard);
     else placeHorizontalShip(coor1, coor2, 'Battleship', 4, gameBoard);
+
     shipList.set('Battleship', shipFactory(4));
   }
 
   function placeDestroyer(coor1, coor2, isVertical) {
+    if (shipList.get('Destroyer') !== undefined)
+      throw new Error('Invalid Action: Destroyer has already been placed.');
+
     if (isVertical) placeVerticalShip(coor1, coor2, 'Destroyer', 3, gameBoard);
     else placeHorizontalShip(coor1, coor2, 'Destroyer', 3, gameBoard);
+
     shipList.set('Destroyer', shipFactory(3));
   }
 
   function placeSubmarine(coor1, coor2, isVertical) {
+    if (shipList.get('Submarine') !== undefined)
+      throw new Error('Invalid Action: Submarine has already been placed.');
+
     if (isVertical) placeVerticalShip(coor1, coor2, 'Submarine', 2, gameBoard);
     else placeHorizontalShip(coor1, coor2, 'Submarine', 2, gameBoard);
+
     shipList.set('Submarine', shipFactory(2));
   }
 
   function placePatrolBoat(coor1, coor2) {
+    if (shipList.get('PatrolBoat') !== undefined)
+      throw new Error('Invalid Action: Patrol Boat has already been placed.');
+
     placeVerticalShip(coor1, coor2, 'PatrolBoat', 1, gameBoard);
     shipList.set('PatrolBoat', shipFactory(1));
   }
