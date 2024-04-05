@@ -110,6 +110,10 @@ function GameModule() {
     return roundNumber;
   }
 
+  function getShipNames() {
+    return playerBoard.getShipNames();
+  }
+
   function isBoardSetupComplete() {
     return playerBoard.areAllShipsPlaced() && compBoard.areAllShipsPlaced();
   }
@@ -137,6 +141,7 @@ function GameModule() {
     getCompBoard,
     increaseRoundNumber,
     getRoundNumber,
+    getShipNames,
     isBoardSetupComplete,
     isGameOver,
     getResultsMessage,

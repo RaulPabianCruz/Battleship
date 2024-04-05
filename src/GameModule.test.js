@@ -116,6 +116,17 @@ test('increaseRoundNumber correctly increases round Number', () => {
   expect(game.getRoundNumber()).toBe(3);
 });
 
+test('getShipNames returns array with all five shipNames', () => {
+  let game = GameModule();
+  expect(game.getShipNames()).toEqual([
+    'Carrier',
+    'Battleship',
+    'Destroyer',
+    'Submarine',
+    'PatrolBoat',
+  ]);
+});
+
 test('isBoardSetupComplete returns false when playerBoard is not setup', () => {
   let game = GameModule();
   game.placeAllCompShips();
