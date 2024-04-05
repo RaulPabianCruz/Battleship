@@ -84,14 +84,6 @@ function GameModule() {
     placeCompShip('PatrolBoat');
   }
 
-  function increaseRoundNumber() {
-    roundNumber += 1;
-  }
-
-  function getRoundNumber() {
-    return roundNumber;
-  }
-
   function compAttack() {
     let attackCoors = comp.attackEnemy();
     playerBoard.receiveAttack(attackCoors[0], attackCoors[1]);
@@ -108,6 +100,18 @@ function GameModule() {
 
   function getCompBoard() {
     return compBoard.getGameboard();
+  }
+
+  function increaseRoundNumber() {
+    roundNumber += 1;
+  }
+
+  function getRoundNumber() {
+    return roundNumber;
+  }
+
+  function isBoardSetupComplete() {
+    return playerBoard.areAllShipsPlaced() && compBoard.areAllShipsPlaced();
   }
 
   function isGameOver() {
@@ -127,12 +131,13 @@ function GameModule() {
     resetGame,
     placePlayerShip,
     placeAllCompShips,
-    increaseRoundNumber,
-    getRoundNumber,
-    getPlayerBoard,
-    getCompBoard,
     playerAttack,
     compAttack,
+    getPlayerBoard,
+    getCompBoard,
+    increaseRoundNumber,
+    getRoundNumber,
+    isBoardSetupComplete,
     isGameOver,
     getResultsMessage,
   };

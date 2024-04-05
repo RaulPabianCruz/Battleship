@@ -73,15 +73,6 @@ test('placeAllCompShips functions correctly', () => {
   ]);
 });
 
-test('increaseRoundNumber correctly increases round Number', () => {
-  let game = GameModule();
-  expect(game.getRoundNumber()).toBe(1);
-  game.increaseRoundNumber();
-  expect(game.getRoundNumber()).toBe(2);
-  game.increaseRoundNumber();
-  expect(game.getRoundNumber()).toBe(3);
-});
-
 test('playerAttack correctly registers on opponent board', () => {
   let game = GameModule();
   game.playerAttack(0, 0);
@@ -114,6 +105,43 @@ test('compAttack returns attack coordinates', () => {
   expect(coordinates[0] >= 0 && coordinates[0] < 10).toBe(true);
   expect(typeof coordinates[1] === 'number').toBe(true);
   expect(coordinates[1] >= 0 && coordinates[1] < 10).toBe(true);
+});
+
+test('increaseRoundNumber correctly increases round Number', () => {
+  let game = GameModule();
+  expect(game.getRoundNumber()).toBe(1);
+  game.increaseRoundNumber();
+  expect(game.getRoundNumber()).toBe(2);
+  game.increaseRoundNumber();
+  expect(game.getRoundNumber()).toBe(3);
+});
+
+test('isBoardSetupComplete returns false when playerBoard is not setup', () => {
+  let game = GameModule();
+  game.placeAllCompShips();
+  game.placePlayerShip('Carrier', 1, 1, false);
+  expect(game.isBoardSetupComplete()).toBe(false);
+});
+
+test('isBoardSetupComplets returns false when compBoard is not setup', () => {
+  let game = GameModule();
+  game.placePlayerShip('Carrier', 0, 0, false);
+  game.placePlayerShip('Battleship', 2, 1, true);
+  game.placePlayerShip('Destroyer', 3, 8, true);
+  game.placePlayerShip('Submarine', 7, 4, false);
+  game.placePlayerShip('PatrolBoat', 9, 7);
+  expect(game.isBoardSetupComplete()).toBe(false);
+});
+
+test('isBoardSetupComplete returns true when both board are fully setup', () => {
+  let game = GameModule();
+  game.placeAllCompShips();
+  game.placePlayerShip('Carrier', 0, 0, false);
+  game.placePlayerShip('Battleship', 2, 1, true);
+  game.placePlayerShip('Destroyer', 3, 8, true);
+  game.placePlayerShip('Submarine', 7, 4, false);
+  game.placePlayerShip('PatrolBoat', 9, 7);
+  expect(game.isBoardSetupComplete()).toBe(true);
 });
 
 test('isGameOver reports that game is not over correctly', () => {
