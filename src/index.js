@@ -9,3 +9,6 @@ controller.resetGameDisplay();
 
 let resetBttn = document.querySelector('.reset-bttn');
 resetBttn.addEventListener('click', controller.resetGameDisplay);
+
+let setupBttn = document.querySelector('.set-up-bttn');
+setupBttn.addEventListener('click', controller.promptShipPlacements);

@@ -29,7 +29,7 @@ body {
     width: 90%;
     display: grid;
     grid-gap: 20px;
-    grid-template-rows: 130px 90px 1fr 70px;
+    grid-template-rows: 130px 90px 1fr 130px;
 }
 
 .header {
@@ -100,13 +100,16 @@ body {
 }
 
 .button-container {
-    display: flex;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 5px;
     justify-content: center;
     align-items: center;
 }
 
-.reset-bttn {
-    width: 80px;
-    height: 40px;
+.reset-bttn,
+.set-up-bttn {
+    width: 100px;
+    height: 60px;
     font-size: 1rem;
 }

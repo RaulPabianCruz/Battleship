@@ -46,7 +46,12 @@ function intializeFooter() {
   resetBttn.textContent = 'Reset';
   resetBttn.classList.add('reset-bttn');
 
+  let setupBttn = document.createElement('button');
+  setupBttn.textContent = 'Setup Board';
+  setupBttn.classList.add('set-up-bttn');
+
   buttonArea.appendChild(resetBttn);
+  buttonArea.appendChild(setupBttn);
 }
 
 function initializeLayout() {
