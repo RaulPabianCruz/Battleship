@@ -3,6 +3,13 @@ import shipFactory from './shipFactory.js';
 function GameBoardFactory() {
   let gameBoard;
   let shipList = new Map();
+  const shipNames = [
+    'Carrier',
+    'Battleship',
+    'Destroyer',
+    'Submarine',
+    'PatrolBoat',
+  ];
 
   function intializeBoard() {
     let tempBoard = new Array(10);
@@ -136,6 +143,10 @@ function GameBoardFactory() {
     return copyBoard(gameBoard);
   }
 
+  function getShipNames() {
+    return shipNames.slice();
+  }
+
   gameBoard = intializeBoard();
 
   return {
@@ -148,6 +159,7 @@ function GameBoardFactory() {
     areAllShipsPlaced,
     haveAllShipsSunk,
     getGameboard,
+    getShipNames,
   };
 }
 

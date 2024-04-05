@@ -435,3 +435,14 @@ test('haveAllShipsSunk reports that all ships have sunk correctly', () => {
   board.receiveAttack(4, 3);
   expect(board.haveAllShipsSunk()).toBe(true);
 });
+
+test('getShipNames returns an array containing all five ship names', () => {
+  let board = GameBoardFactory();
+  expect(board.getShipNames()).toEqual([
+    'Carrier',
+    'Battleship',
+    'Destroyer',
+    'Submarine',
+    'PatrolBoat',
+  ]);
+});
