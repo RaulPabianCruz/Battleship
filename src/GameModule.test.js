@@ -3,7 +3,6 @@ import GameModule from './GameModule';
 test('GameModule initializes boards correctly', () => {
   let game = GameModule();
   expect(game.getRoundNumber()).toBe(1);
-  expect(game.isPlayerTurn()).toBe(true);
   expect(game.getPlayerBoard()).toEqual(game.getCompBoard());
   expect(game.getPlayerBoard()).toEqual([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -89,12 +88,6 @@ test('playerAttack correctly registers on opponent board', () => {
   expect(game.getCompBoard()[0]).toContain(-1);
 });
 
-test('playerAttack correctly switches turns', () => {
-  let game = GameModule();
-  game.playerAttack(0, 0);
-  expect(game.isPlayerTurn()).toBe(false);
-});
-
 test('compAttack registers correctly on player board', () => {
   let game = GameModule();
   game.compAttack();
@@ -110,13 +103,6 @@ test('compAttack registers correctly on player board', () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
-});
-
-test('compAttack correctly switches turns', () => {
-  let game = GameModule();
-  game.playerAttack(0, 0);
-  game.compAttack();
-  expect(game.isPlayerTurn()).toBe(true);
 });
 
 test('compAttack returns attack coordinates', () => {
@@ -189,7 +175,6 @@ test('resetGame resets everything correctly', () => {
 
   game.resetGame();
   expect(game.getRoundNumber()).toBe(1);
-  expect(game.isPlayerTurn()).toBe(true);
   expect(game.getCompBoard()).toEqual([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

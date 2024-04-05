@@ -5,14 +5,12 @@ function GameModule() {
   let playerBoard;
   let compBoard;
   let comp;
-  let playerTurn;
   let roundNumber;
 
   function resetGame() {
     comp = PlayerFactory();
     playerBoard = GameBoardFactory();
     compBoard = GameBoardFactory();
-    playerTurn = true;
     roundNumber = 1;
   }
 
@@ -86,14 +84,6 @@ function GameModule() {
     placeCompShip('PatrolBoat');
   }
 
-  function togglePlayerTurn() {
-    playerTurn = !playerTurn;
-  }
-
-  function isPlayerTurn() {
-    return playerTurn;
-  }
-
   function increaseRoundNumber() {
     roundNumber += 1;
   }
@@ -105,13 +95,11 @@ function GameModule() {
   function compAttack() {
     let attackCoors = comp.attackEnemy();
     playerBoard.receiveAttack(attackCoors[0], attackCoors[1]);
-    togglePlayerTurn();
     return attackCoors;
   }
 
   function playerAttack(coor1, coor2) {
     compBoard.receiveAttack(coor1, coor2);
-    togglePlayerTurn();
   }
 
   function getPlayerBoard() {
@@ -139,7 +127,6 @@ function GameModule() {
     resetGame,
     placePlayerShip,
     placeAllCompShips,
-    isPlayerTurn,
     increaseRoundNumber,
     getRoundNumber,
     getPlayerBoard,
