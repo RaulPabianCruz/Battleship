@@ -114,6 +114,10 @@ function GameBoardFactory() {
     if (gameBoard[coor1][coor2] === 0) gameBoard[coor1][coor2] = -1;
   }
 
+  function areAllShipsPlaced() {
+    return shipList.size === 5;
+  }
+
   function haveAllShipsSunk() {
     return shipList.size === 0;
   }
@@ -141,6 +145,7 @@ function GameBoardFactory() {
     placeSubmarine,
     placePatrolBoat,
     receiveAttack,
+    areAllShipsPlaced,
     haveAllShipsSunk,
     getGameboard,
   };

@@ -1,5 +1,6 @@
 import { getOptError } from 'cli';
 import GameBoardFactory from './GameboardFactory.js';
+import GameModule from './GameModule.js';
 
 test('Initializes with correct gameboard layout', () => {
   let board = GameBoardFactory();
@@ -404,6 +405,22 @@ test('receiveAttack throws error when coordinates are out of bounds', () => {
   expect(() => {
     board.receiveAttack(4, 10);
   }).toThrow('Invalid Attack: Out of bounds.');
+});
+
+test('areAllShipsPlaced returns false when board is missing ships', () => {
+  let board = GameBoardFactory();
+  board.placeBattleship(1, 1, false);
+  expect(board.areAllShipsPlaced()).toBe(false);
+});
+
+test('areAllShipsPlaced returns true when board contains all 5 ships', () => {
+  let board = GameBoardFactory();
+  board.placeCarrier(0, 0, false);
+  board.placeBattleship(1, 1, false);
+  board.placeDestroyer(2, 2, false);
+  board.placeSubmarine(3, 3, false);
+  board.placePatrolBoat(4, 4);
+  expect(board.areAllShipsPlaced()).toBe(true);
 });
 
 test('haveAllShipsSunk reports that ships are remaining correctly', () => {
