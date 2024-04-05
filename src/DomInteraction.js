@@ -77,6 +77,14 @@ function DOMController() {
     }
   }
 
+  function resetGameDisplay() {
+    game.resetGame();
+    game.placeAllCompShips();
+    renderGrid(game.getPlayerBoard(), 'player');
+    renderGrid(game.getCompBoard(), 'opponent');
+    updateStatusText();
+  }
+
   function enableSquareListeners() {
     let opponentGrid = document.querySelector('.opponent.grid');
     let squareArray = opponentGrid.querySelectorAll('.grid-square');
@@ -84,20 +92,27 @@ function DOMController() {
       square.addEventListener('click', gridClickHandler);
   }
 
-  function getPromptCoordinates(shipName) {
-    let coor1, coor2;
+  function startGame() {
+    if (game.isBoardSetupComplete()) {
+      renderGrid(game.getPlayerBoard(), 'player');
+      enableSquareListeners();
+      updateStatusText();
+    } else resetGameDisplay();
+  }
 
+  function getPromptCoordinates(shipName) {
     let response = prompt(
       `Enter which row and column to place your ${shipName} on (in the format (0-9),(0-9)):`,
     );
+    if (response === null) return response;
+
     let coordinates = response.split(',');
     if (coordinates.length !== 2) {
       alert('Invalid coordinates, try again.');
       return getPromptCoordinates(shipName);
     }
 
-    [coor1, coor2] = coordinates;
-    return [Number(coor1), Number(coor2)];
+    return [Number(coordinates[0]), Number(coordinates[1])];
   }
 
   function getPromptOrientation(shipName) {
@@ -110,18 +125,20 @@ function DOMController() {
   }
 
   function promptShipPlacements() {
-    const shipNames = [
-      'Carrier',
-      'Battleship',
-      'Destroyer',
-      'Submarine',
-      'PatrolBoat',
-    ];
+    //here temporarily to prevent setup button from breaking an ongoing game.
+    resetGameDisplay();
+
+    const shipNames = game.getShipNames();
     let counter = 0;
+
     while (counter < shipNames.length) {
-      let coor1, coor2, isVertical;
-      [coor1, coor2] = getPromptCoordinates(shipNames[counter]);
-      isVertical = getPromptOrientation(shipNames[counter]);
+      let coordinates = getPromptCoordinates(shipNames[counter]);
+      if (coordinates === null) break;
+
+      let isVertical = getPromptOrientation(shipNames[counter]);
+
+      let coor1, coor2;
+      [coor1, coor2] = coordinates;
 
       let isShipPlaced = game.placePlayerShip(
         shipNames[counter],
@@ -136,15 +153,8 @@ function DOMController() {
       }
       counter += 1;
     }
-    enableSquareListeners();
-  }
 
-  function resetGameDisplay() {
-    game.resetGame();
-    game.placeAllCompShips();
-    renderGrid(game.getPlayerBoard(), 'player');
-    renderGrid(game.getCompBoard(), 'opponent');
-    updateStatusText();
+    startGame();
   }
 
   return { resetGameDisplay, promptShipPlacements };
