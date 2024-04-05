@@ -62,9 +62,6 @@ function DOMController() {
 
     if (typeof value === 'string') square.classList.add('ship');
 
-    if (selector === 'opponent')
-      square.addEventListener('click', gridClickHandler);
-
     return square;
   }
 
@@ -80,15 +77,76 @@ function DOMController() {
     }
   }
 
+  function enableSquareListeners() {
+    let opponentGrid = document.querySelector('.opponent.grid');
+    let squareArray = opponentGrid.querySelectorAll('.grid-square');
+    for (let square of squareArray)
+      square.addEventListener('click', gridClickHandler);
+  }
+
+  function getPromptCoordinates(shipName) {
+    let coor1, coor2;
+
+    let response = prompt(
+      `Enter which row and column to place your ${shipName} on (in the format (0-9),(0-9)):`,
+    );
+    let coordinates = response.split(',');
+    if (coordinates.length !== 2) {
+      alert('Invalid coordinates, try again.');
+      return getPromptCoordinates(shipName);
+    }
+
+    [coor1, coor2] = coordinates;
+    return [Number(coor1), Number(coor2)];
+  }
+
+  function getPromptOrientation(shipName) {
+    let isVertical = undefined;
+    if (shipName.localeCompare('PatrolBoat') !== 0)
+      isVertical = confirm(
+        'Press Ok to place the ship vertically or press cancel to place it horizontally',
+      );
+    return isVertical;
+  }
+
+  function promptShipPlacements() {
+    const shipNames = [
+      'Carrier',
+      'Battleship',
+      'Destroyer',
+      'Submarine',
+      'PatrolBoat',
+    ];
+    let counter = 0;
+    while (counter < shipNames.length) {
+      let coor1, coor2, isVertical;
+      [coor1, coor2] = getPromptCoordinates(shipNames[counter]);
+      isVertical = getPromptOrientation(shipNames[counter]);
+
+      let isShipPlaced = game.placePlayerShip(
+        shipNames[counter],
+        coor1,
+        coor2,
+        isVertical,
+      );
+
+      if (!isShipPlaced) {
+        alert('Invalid ship placement, please try again.');
+        continue;
+      }
+      counter += 1;
+    }
+    enableSquareListeners();
+  }
+
   function resetGameDisplay() {
     game.resetGame();
-    game.placeShips();
     game.placeAllCompShips();
     renderGrid(game.getPlayerBoard(), 'player');
     renderGrid(game.getCompBoard(), 'opponent');
     updateStatusText();
   }
 
-  return { resetGameDisplay };
+  return { resetGameDisplay, promptShipPlacements };
 }
 export default DOMController;
